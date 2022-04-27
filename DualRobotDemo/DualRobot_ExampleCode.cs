@@ -4,9 +4,7 @@ namespace DualRobotDemo
 {
     internal class DualRobot_ExampleCode
     {
-        /// <summary>
         /// Tested
-        /// </summary>
         public void CR7_BasicMovement_Demo()
         {
             DualRobotLib.Core core = new Core();
@@ -49,9 +47,7 @@ namespace DualRobotDemo
             core.MoveSinglePoint(Model.CR7);
         }
 
-        /// <summary>
         /// Testing
-        /// </summary>
         public void CR15_BasicMovement_Demo()
         {
             DualRobotLib.Core core = new Core();
