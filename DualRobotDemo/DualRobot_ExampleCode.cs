@@ -4,9 +4,7 @@ namespace DualRobotDemo
 {
     internal class DualRobot_ExampleCode
     {
-        /// <summary>
         /// Tested
-        /// </summary>
         public void CR7_BasicMovement_Demo()
         {
             DualRobotLib.Core core = new Core();
@@ -49,15 +47,14 @@ namespace DualRobotDemo
             core.MoveSinglePoint(Model.CR7);
         }
 
-        /// <summary>
         /// Testing
-        /// </summary>
         public void CR15_BasicMovement_Demo()
         {
             DualRobotLib.Core core = new Core();
 
             // 1. establish connection
-            core.Connect(Model.CR15, "192.168.3.125", 60008);
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            // core.Connect(Model.CR15, "192.168.3.125", 60008);
 
             // 2. movement test
 
