@@ -29,41 +29,23 @@ namespace DualRobotDemo
             DualRobotLib.Core core = new Core();
 
             // 1. establish connection
-            // core.Connect(Model.CR15, "127.0.0.1", 9021);
-            core.Connect(Model.CR15, "192.168.3.125", 60008);
+            core.Connect(Model.CR7, "192.168.3.124", 60008);
+            // core.Connect(Model.CR7, "127.0.0.1", 60008);
 
             // 2. movement test
 
             // 2.1 define the tcp
-            float[] tcp_cr15 = { 0, 55, 700, 0, 0, 0 };
-            core.SetTCP(Model.CR15, tcp_cr15);
+            float[] tcp_cr7 = { -45, -125, 183, 0, 0, 0 };
+            core.SetTCP(Model.CR7, tcp_cr7);
 
             // 2.2 define the tcp speed
-            core.SetSpeed(Model.CR15, 100);
+            core.SetSpeed(Model.CR7, 100);
 
             // 2.3 define the user frame
-            core.SetUserFrame(Model.CR15);
+            core.SetUserFrame(Model.CR7);
 
-            // 2.4.1 Set Single Point
-            float[] pos_cr15 = { 50, 0, 0, 0, 0, 0 };
-            core.SetSinglePoint(Model.CR15, pos_cr15);
-
-            // 2.4.2 Move
-            core.MoveSinglePoint(Model.CR15);
-
-            // 2.4.3 Set Single Point
-            float[] pos_cr15_2 = { -50, 0, 0, 0, 0, 0 };
-            core.SetSinglePoint(Model.CR15, pos_cr15_2);
-
-            // 2.4.4 Move
-            core.MoveSinglePoint(Model.CR15);
-
-            // 2.4.5 Set Single Point
-            float[] pos_cr15_3 = { 0, 0, 0, 0, 0, 0 };
-            core.SetSinglePoint(Model.CR15, pos_cr15_3);
-
-            // 2.4.6 Move
-            core.MoveSinglePoint(Model.CR15);
+            // 3. Scene2 - single robot
+            core.Scene2_CR7_Demo(15, 15);
         }
     }
 }

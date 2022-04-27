@@ -4,14 +4,14 @@ namespace DualRobotDemo
 {
     internal class DualRobot_ExampleCode
     {
-        /// Tested
+        /// CR7
         public void CR7_BasicMovement_Demo()
         {
             DualRobotLib.Core core = new Core();
 
             // 1. establish connection
-            // core.Connect(Model.CR7, "192.168.3.124", 60008);
-            core.Connect(Model.CR7, "127.0.0.1", 60008);
+            core.Connect(Model.CR7, "192.168.3.124", 60008);
+            // core.Connect(Model.CR7, "127.0.0.1", 60008);
 
             // 2. movement test
 
@@ -47,7 +47,31 @@ namespace DualRobotDemo
             core.MoveSinglePoint(Model.CR7);
         }
 
-        /// Testing
+        public void CR7_Scene2_Demo()
+        {
+            DualRobotLib.Core core = new Core();
+
+            // 1. establish connection
+            core.Connect(Model.CR7, "192.168.3.124", 60008);
+            // core.Connect(Model.CR7, "127.0.0.1", 60008);
+
+            // 2. movement test
+
+            // 2.1 define the tcp
+            float[] tcp_cr7 = { -45, -125, 183, 0, 0, 0 };
+            core.SetTCP(Model.CR7, tcp_cr7);
+
+            // 2.2 define the tcp speed
+            core.SetSpeed(Model.CR7, 100);
+
+            // 2.3 define the user frame
+            core.SetUserFrame(Model.CR7);
+
+            // 3. Scene2 - single robot
+            core.Scene2_CR7_Demo(15, 15);
+        }
+
+        /// CR15
         public void CR15_BasicMovement_Demo()
         {
             DualRobotLib.Core core = new Core();
