@@ -1,9 +1,22 @@
-﻿using DualRobotLib;
+﻿using System;
+using DualRobotLib;
 
 namespace DualRobotDemo
 {
     internal class DualRobot_ExampleCode
     {
+        /// Connection Test
+        public void ConnectionTest()
+        {
+            DualRobotLib.Core core = new Core();
+
+            // 1. establish connection
+            // core.Connect(Model.CR7, "192.168.3.124", 60008);
+            var result = core.Connect(Model.CR7, "127.0.0.1", 60008);
+
+            Console.WriteLine("result:" + result);
+        }
+
         /// CR7
         public void CR7_BasicMovement_Demo()
         {
@@ -120,8 +133,10 @@ namespace DualRobotDemo
             DualRobotLib.Core core = new Core();
 
             // 1. establish connection
-            core.Connect(Model.CR15, "192.168.3.125", 60008);
-            core.Connect(Model.CR7, "192.168.3.124", 60008);
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+            // core.Connect(Model.CR15, "192.168.3.125", 60008);
+            // core.Connect(Model.CR7, "192.168.3.124", 60008);
 
             // 2. reset robot movement
             core.ResetMovement(Model.CR15);
@@ -143,7 +158,7 @@ namespace DualRobotDemo
             core.SetUserFrame(Model.CR7);
 
             // 6. Scene 1B
-            core.Scene1B(130, 0.5, 180, 90, 180, 45);
+            core.Scene1B(MovementType.QuickCheck, 130, 0.5, 180, 90, 180, 45);
         }
 
         public void DualRobot_Scene2_Demo()
@@ -175,7 +190,7 @@ namespace DualRobotDemo
             core.SetUserFrame(Model.CR7);
 
             // 6. Scene 2
-            core.Scene2(100,10,15,15);
+            core.Scene2(MovementType.QuickCheck,100,10,15,15);
         }
 
         public void DualRobot_Simulation_Demo()
@@ -218,7 +233,7 @@ namespace DualRobotDemo
             // th1.Start();
 
             // 6. Scene 1
-            core.Scene1B(130, 0.5, 180, 90, 180, 45);
+            core.Scene1B(MovementType.QuickCheck,130, 0.5, 180, 90, 180, 45);
 
             // 7. Scene 2
             // core.Scene2(100,10,15,15);
