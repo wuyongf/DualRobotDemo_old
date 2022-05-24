@@ -50,8 +50,8 @@ namespace DualRobotDemo
             // core.Connect(Model.CR7, "192.168.3.124", 60008);
 
             // examples: calibrated user frame data
-            double[] Pos_Cr7_CalliBase = { 708.92, 1.98, 51.15, -2.11, 46.69, -0.4 };
-            double[] Pos_Cr15_CalliBase = { 1337.41, -1.24, -386.08, -178.4, 44.25, -177.79 };
+            double[] Pos_Cr7_CalliBase = { 825.25, 6.38, 134.67, -2.11, 46.69, -0.40 };
+            double[] Pos_Cr15_CalliBase = { 1223.50, -1.77, -304.52, 1.61, 44.25, -177.78 };
             core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
 
             // step4:
@@ -69,16 +69,16 @@ namespace DualRobotDemo
             core.SetSpeed(Model.CR15, 100);
             core.SetSpeed(Model.CR7, 100);
             // c. examples.
-            double[] param = { 1000, 130, 0.5, 180, 90, 180, 45 };
-            core.SceneParamInit(SceneName.Scene1B, param);
+            double[] param = { 250, 300, 300, 100, 100, 0 };
+            core.SceneParamInit(SceneName.Scene1C, param);
             // d.
-            core.SceneRobotInit(SceneName.Scene1B);
+            core.SceneRobotInit(SceneName.Scene1C);
             // e.
             core.SetUserFrame(Model.CR15);
             core.SetUserFrame(Model.CR7);
 
-            // step5: Scene1B
-            core.Scene1B(MovementType.QuickCheck);
+            // step5: Scene1C
+            core.Scene1C(MovementType.QuickCheck);
         }
     }
 }
