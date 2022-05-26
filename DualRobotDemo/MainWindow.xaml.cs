@@ -28,12 +28,12 @@ namespace DualRobotDemo
             // step2: TCP Calibration.
             // step3: RobotBase Calibration.
             // step4: Measurement Initialization.
-            // step5: Scene1B
+            // step5: Scene2
 
             // step2:
             // a. install calibration tool.
             // b. install calibration plate & calibration pin.
-            // c. 4 points method.
+            // c. 6 points method.
             // d. record calibrated tcp data.
 
             // step3:
@@ -42,6 +42,7 @@ namespace DualRobotDemo
             // c. record calibrated user frame data. 
             //  c.1. robot connection.
             //  c.2. record calibrated user frame data. 
+            //**c.3. record calibrated rotate plate center data.
 
             DualRobotLib.Core core = new Core();
             core.Connect(Model.CR15, "127.0.0.1", 9021);
@@ -54,6 +55,10 @@ namespace DualRobotDemo
             double[] Pos_Cr15_CalliBase = { 1223.50, -1.77, -304.52, 1.61, 44.25, -177.78 };
             core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
 
+            // examples: rotate plate center data.
+            double[] Pos_Cr7_PlateCenter = { 828.51, -50, 61.10, 2.74, 1.11, -90.00 };
+            core.RotationPlateCalibrationInit(Pos_Cr7_PlateCenter);
+
             // step4:
             // a. install testing tools.
             // b. tools setting, tcp speed.
@@ -62,23 +67,24 @@ namespace DualRobotDemo
             // e. define user frame
             //
             // b. examples: tcp data
-            float[] tcp_cr7 = { 9, 0, 123, 0, -45, 0 };
-            float[] tcp_cr15 = { 0, 0, 140, 0, 45, -90 };
+            float[] tcp_cr7 = { -125, 50, 45, 90, 0, 180 };
+            float[] tcp_cr15 = { 0, 134, 182, 0, 0, 90 };
             core.SetTCP(Model.CR15, tcp_cr15);
             core.SetTCP(Model.CR7, tcp_cr7);
             core.SetSpeed(Model.CR15, 100);
             core.SetSpeed(Model.CR7, 100);
             // c. examples.
-            double[] param = { 250, 300, 300, 100, 100, 0 };
-            core.SceneParamInit(SceneName.Scene1C, param);
+            double[] param = { 430, 100, 10, 250, 90, 45 };
+            core.SceneParamInit(SceneName.Scene2, param);
             // d.
-            core.SceneRobotInit(SceneName.Scene1C);
+            core.SceneRobotInit(SceneName.Scene2);
             // e.
             core.SetUserFrame(Model.CR15);
             core.SetUserFrame(Model.CR7);
 
-            // step5: Scene1C
-            core.Scene1C(MovementType.QuickCheck);
+            // step5: Scene2
+            core.Scene2(MovementType.QuickCheck);
+
         }
     }
 }
