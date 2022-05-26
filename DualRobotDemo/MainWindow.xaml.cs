@@ -69,16 +69,17 @@ namespace DualRobotDemo
             core.SetSpeed(Model.CR15, 100);
             core.SetSpeed(Model.CR7, 100);
             // c. examples.
-            double[] param = { 250, 300, 300, 100, 100, 0 };
-            core.SceneParamInit(SceneName.Scene1C, param);
+            double[] param = { 1000, 130, 0.5, 180, 90, 180, 45 };
+            core.SceneParamInit(SceneName.Scene1B, param);
             // d.
-            core.SceneRobotInit(SceneName.Scene1C);
+            core.SceneRobotInit(SceneName.Scene1B);
             // e.
             core.SetUserFrame(Model.CR15);
             core.SetUserFrame(Model.CR7);
 
-            // step5: Scene1C
-            core.Scene1C(MovementType.QuickCheck);
+            // step5: Scene1B
+            core.Scene1B(MovementType.QuickCheck);
+
         }
     }
 }
