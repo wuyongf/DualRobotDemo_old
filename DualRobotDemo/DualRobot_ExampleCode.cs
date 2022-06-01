@@ -79,6 +79,18 @@ namespace DualRobotDemo
             Console.WriteLine("tcp_distance: " + tcp_distance);
         }
 
+        public void GetSpanningRange()
+        {
+            DualRobotLib.Core core = new Core();
+
+            var h = core.GetSpanningHeight(0);
+
+            var w = core.GetSpanningWidth(0);
+
+            Console.WriteLine("height: " + h);
+            Console.WriteLine("width: " + w);
+        }
+
         /// CR7
         public void CR7_MoveTo_Demo()
         {
