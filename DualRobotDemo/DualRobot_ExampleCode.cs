@@ -81,14 +81,29 @@ namespace DualRobotDemo
 
         public void GetSpanningRange()
         {
+            // 0, 200, 180, 100, 90, 0
+            // 200, 500, 300, 250, 150, 0
+            // 400, 600, 500, 300, 250, 0
+            // 500, 600, 500, 300, 250, 0
+            // 800, 800, 600, 400, 300, 0
+            // 1000, 800, 400, 400, 200, 0
+
+
             DualRobotLib.Core core = new Core();
 
-            var h = core.GetSpanningHeight(0);
+            var h = core.GetSpanningHeight(1000);
 
-            var w = core.GetSpanningWidth(0);
+            var w = core.GetSpanningWidth(1000);
 
-            Console.WriteLine("height: " + h);
             Console.WriteLine("width: " + w);
+            Console.WriteLine("height: " + h);
+
+        }
+
+        public void GetMoveFlag()
+        {
+            // Thread th1 = new Thread(() => core.thread_MoveFlag(Model.CR15));
+            // th1.Start();
         }
 
         /// CR7
