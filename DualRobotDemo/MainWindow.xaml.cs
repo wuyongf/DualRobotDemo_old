@@ -24,25 +24,6 @@ namespace DualRobotDemo
     {
         public MainWindow()
         {
-            // step1: Robot Installation & Calibration. (skip)
-            // step2: TCP Calibration.
-            // step3: RobotBase Calibration.
-            // step4: Measurement Initialization.
-            // step5: Scene1B
-
-            // step2:
-            // a. install calibration tool.
-            // b. install calibration plate & calibration pin.
-            // c. 4 points method.
-            // d. record calibrated tcp data.
-
-            // step3:
-            // a. uninstall calibration pin.
-            // b. 3 point method.
-            // c. record calibrated user frame data. 
-            //  c.1. robot connection.
-            //  c.2. record calibrated user frame data. 
-
             DualRobotLib.Core core = new Core();
             core.Connect(Model.CR15, "127.0.0.1", 9021);
             core.Connect(Model.CR7, "127.0.0.1", 60008);
@@ -68,19 +49,24 @@ namespace DualRobotDemo
             core.SetTCP(Model.CR7, tcp_cr7);
             core.SetSpeed(Model.CR15, 100);
             core.SetSpeed(Model.CR7, 100);
-            // c. examples.
-            // double[] param = { 1000, 130, 10, 180, 90, 180, 45 };
-            // double[] param = { 1000, 130, 0.5, 180, 90, 180, 45 };
-            double[] param = { 200, 102, 34, 102, 34, 180, 60 };
-            core.SceneParamInit(SceneName.Scene1B, param);
-            // d.
-            core.SceneRobotInit(SceneName.Scene1B);
-            // e.
+
+            core.MoveTo(Model.CR15, Position.Home);
+            core.MoveTo(Model.CR7, Position.Home);
+            core.SceneParamInit(SceneName.Scene1C, new double[] { 1000, 0, 0, 0, 0, 0 });
+            core.SceneRobotInit(SceneName.Scene1C);
             core.SetUserFrame(Model.CR15);
             core.SetUserFrame(Model.CR7);
 
-            // step5: Scene1B
-            core.Scene1B(MovementType.QuickCheck);
+
+            double[] param1C = {1000, 400, 400, 200, 200, 0.00};
+            core.SceneParamInit(SceneName.Scene1C, param1C);
+            core.SceneRobotInit(SceneName.Scene1C); // this method need wait
+            core.SetUserFrame(Model.CR15);
+            core.SetUserFrame(Model.CR7);
+            core.Scene1C(MovementType.QuickCheck);
+
+            core.SceneRobotInit(SceneName.Scene1C);
+            core.Scene1C(MovementType.QuickCheck);
         }
     }
 }
