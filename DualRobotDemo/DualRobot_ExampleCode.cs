@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using DualRobotLib;
 
 namespace DualRobotDemo
@@ -477,6 +478,61 @@ namespace DualRobotDemo
 
             // step5: Scene2
             core.Scene2(MovementType.QuickCheck);
+        }
+
+        /// Motor
+        public void SerialPortTest()
+        {
+            DualRobotLib.Core core = new Core();
+
+            core.MotorInitTest();
+        }
+
+        public void threadDemo()
+        {
+            // public delegate void SumOfNumbersCallback(int SumOfNumbers);
+            //
+            // class Number
+            // {
+            //     private int _target;
+            //     SumOfNumbersCallback _callbackMethod;
+            //
+            //     public Number(int target, SumOfNumbersCallback callbackMethod)
+            //     {
+            //         this._target = target;
+            //         _callbackMethod = callbackMethod;
+            //     }
+            //
+            //     public void PrintSumOfNumbers()
+            //     {
+            //         int sum = 0;
+            //         for (int i = 1; i <= _target; i++)
+            //         {
+            //             sum += i;
+            //         }
+            //
+            //         if (_callbackMethod != null)
+            //             _callbackMethod(sum);
+            //     }
+            // }
+            //
+            // public static void PrintSum(int sum)
+            // {
+            //     Console.WriteLine("Sum of numbers = " + sum);
+            // }
+            //
+            // public MainWindow()
+            // {
+            //     int target = 5;
+            //
+            //     SumOfNumbersCallback callback = new SumOfNumbersCallback(PrintSum);
+            //
+            //     Number number = new Number(target, callback);
+            //
+            //     Thread T1 = new Thread(new ThreadStart(number.PrintSumOfNumbers));
+            //
+            //     T1.Start();
+            // }
         }
     }
 }
