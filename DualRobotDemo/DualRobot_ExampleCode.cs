@@ -138,7 +138,7 @@ namespace DualRobotDemo
             // 2. movement test
 
             // 2.1 define the tcp
-            float[] tcp_cr7 = { -55, -140, 183, 0, 0, 0 };
+            float[] tcp_cr7 = { 9, 0, 123, 0, -45, 0 };
             core.SetTCP(Model.CR7, tcp_cr7);
 
             // 2.2 define the tcp speed
