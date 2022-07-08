@@ -298,7 +298,7 @@ namespace DualRobotDemo
 
             // examples: rotate plate center data.
             double[] Pos_Cr7_PlateCenter = { 828.51, -50, 561.10, 2.74, 1.11, -90.00 };
-            core.RotationPlateCalibrationInit(Pos_Cr7_PlateCenter);
+            core.SetStationAntennaTCP_Cr7(Pos_Cr7_PlateCenter);
 
             // step4:
             // a. install testing tools.
@@ -376,7 +376,119 @@ namespace DualRobotDemo
             // c. examples.
             // double[] param = { 1000, 130, 10, 180, 90, 180, 45 };
             // double[] param = { 1000, 130, 0.5, 180, 90, 180, 45 };
-            double[] param = { 200, 102, 34, 102, 34, 180, 60 };
+            // double[] param = { 200, 102, 34, 102, 34, 180, 60 };
+            double[] param = { 1000, 130, 10, 50, 25, 180, 45 };
+            core.SceneParamInit(SceneName.Scene1B, param);
+            // d.
+            core.SceneRobotInit(SceneName.Scene1B);
+            // e.
+            core.SetUserFrame(Model.CR15);
+            core.SetUserFrame(Model.CR7);
+
+            // step5: Scene1B
+            core.Scene1B(MovementType.QuickCheck);
+        }
+
+        public void DualRobot_Scene1B_Demo_WithCalibration_TBC()
+        {
+            // step1: Robot Installation & Calibration. (skip)
+            // step2: TCP Calibration.
+            // step3: RobotBase Calibration.
+            // step4: Measurement Initialization.
+            // step5: Scene1B
+
+            // step2:
+            // a. install calibration tool.
+            // b. install calibration plate & calibration pin.
+            // c. 4 points method.
+            // d. record calibrated tcp data.
+
+            // step3:
+            // a. uninstall calibration pin.
+            // b. 3 point method.
+            // c. record calibrated user frame data. 
+            //  c.1. robot connection.
+            //  c.2. record calibrated user frame data. 
+
+            DualRobotLib.Core core = new Core();
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+            // core.Connect(Model.CR15, "192.168.3.125", 60008);
+            // core.Connect(Model.CR7, "192.168.3.124", 60008);
+
+            // examples: calibrated user frame data
+            double[] Pos_Cr7_CalliBase = { 825.25, 6.38, 134.67, -2.11, 46.69, -0.40 };
+            double[] Pos_Cr15_CalliBase = { 1223.50, -1.77, -304.52, 1.61, 44.25, -177.78 };
+            core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
+
+            // step4:
+            // a. install testing tools.
+            // b. tools setting, tcp speed.
+            // c. define scene params.
+            // d. robots move to init position.
+            // e. define user frame
+            //
+            // b. examples: tcp data
+            float[] tcp_cr7 = { -61.7107f, 0, 193.7107f, 0, -45, 0 };
+            float[] tcp_cr15 = { 0, 0, 140, 0, 45, -90 };
+            core.SetTCP(Model.CR15, tcp_cr15);
+            core.SetTCP(Model.CR7, tcp_cr7);
+            core.SetSpeed(Model.CR15, 100);
+            core.SetSpeed(Model.CR7, 100);
+            // c. examples.
+            // double[] param = { 1000, 130, 10, 180, 90, 180, 45 };
+            // double[] param = { 1000, 130, 0.5, 180, 90, 180, 45 };
+            // double[] param = { 200, 102, 34, 102, 34, 180, 60 };
+            double[] param = { 10, 130, 10, 50, 25, 180, 45 };
+            core.SceneParamInit(SceneName.Scene1B, param);
+            // d.
+            core.SceneRobotInit(SceneName.Scene1B);
+            // e.
+            core.SetUserFrame(Model.CR15);
+            core.SetUserFrame(Model.CR7);
+
+            // step5: Scene1B
+            core.Scene1B(MovementType.QuickCheck);
+        }
+
+        public void DualRobot_Scene1B_Demo_WithCalibration_CityU()
+        {
+            // (1) Connection
+            DualRobotLib.Core core = new Core();
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+            // core.Connect(Model.CR15, "192.168.3.125", 60008);
+            // core.Connect(Model.CR7, "192.168.3.124", 60008);
+
+            // (2) Get Calibrated Co-Frame Data
+            double[] Pos_Cr7_CalliBase = { 825.25, 6.38, 134.67, -2.11, 46.69, -0.40 };
+            double[] Pos_Cr15_CalliBase = { 1223.50, -1.77, -304.52, 1.61, 44.25, -177.78 };
+            core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
+
+            // (3) Get Tool Antenna TCP Data
+            float[] cal_pin_tcp_cr7 = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+            float[] cal_pin_tcp_cr15 = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+            float[] cal_pin_length_cr7 = { 0.0f, 0.0f, 450.0f, 0.0f, 0.0f, 0.0f };
+            float[] cal_pin_length_cr15 = { 0.0f, 0.0f, 450.0f, 0.0f, 0.0f, 0.0f };
+            var fixture_tcp_cr7 = core.GetToolFixtureTCP(Model.CR7, cal_pin_tcp_cr7, cal_pin_length_cr7);
+            var fixture_tcp_cr15 = core.GetToolFixtureTCP(Model.CR15, cal_pin_tcp_cr15, cal_pin_length_cr15);
+
+            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
+            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
+            var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
+            var tcp_cr15 = core.GetToolAntennaTCP(Model.CR15, fixture_tcp_cr15, antenna_offset_cr15);
+            Console.WriteLine("tcp_cr7: " + tcp_cr7);
+            Console.WriteLine("tcp_cr15: " + tcp_cr15);
+
+            core.SetTCP(Model.CR15, tcp_cr15);
+            core.SetTCP(Model.CR7, tcp_cr7);
+            core.SetSpeed(Model.CR15, 100);
+            core.SetSpeed(Model.CR7, 100);
+            // c. examples.
+            // double[] param = { 1000, 130, 10, 180, 90, 180, 45 };
+            // double[] param = { 1000, 130, 0.5, 180, 90, 180, 45 };
+            // double[] param = { 200, 102, 34, 102, 34, 180, 60 };
+            double[] param = { 1000, 130, 10, 50, 25, 180, 45 };
             core.SceneParamInit(SceneName.Scene1B, param);
             // d.
             core.SceneRobotInit(SceneName.Scene1B);
@@ -435,7 +547,7 @@ namespace DualRobotDemo
             core.SetSpeed(Model.CR15, 100);
             core.SetSpeed(Model.CR7, 100);
             // c. examples.
-            double[] param = { 250, 300, 300, 100, 100, 0 };
+            double[] param = { 250, 299.9, 229.9, 14, 11, 0 };
             core.SceneParamInit(SceneName.Scene1C, param);
             // d.
             core.SceneRobotInit(SceneName.Scene1C);
@@ -444,7 +556,155 @@ namespace DualRobotDemo
             core.SetUserFrame(Model.CR7);
 
             // step5: Scene1C
+            // Thread th_scene1c = new Thread(() => core.Scene1C(MovementType.QuickCheck));
+            // th_scene1c.Start();
+
+            // Thread th1 = new Thread(() => core.thread_MoveFlag(Model.CR15));
+            // th1.Start();
+
             core.Scene1C(MovementType.QuickCheck);
+
+            Console.WriteLine("Waiting...");
+
+            // Thread.Sleep(100000000);
+
+            Console.WriteLine("Done");
+        }
+
+        public void DualRobot_Scene1C_Demo_WithCalibration_TBC()
+        {
+            // step1: Robot Installation & Calibration. (skip)
+            // step2: TCP Calibration.
+            // step3: RobotBase Calibration.
+            // step4: Measurement Initialization.
+            // step5: Scene1B
+
+            // step2:
+            // a. install calibration tool.
+            // b. install calibration plate & calibration pin.
+            // c. 4 points method.
+            // d. record calibrated tcp data.
+
+            // step3:
+            // a. uninstall calibration pin.
+            // b. 3 point method.
+            // c. record calibrated user frame data. 
+            //  c.1. robot connection.
+            //  c.2. record calibrated user frame data. 
+
+            DualRobotLib.Core core = new Core();
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+            // core.Connect(Model.CR15, "192.168.3.125", 60008);
+            // core.Connect(Model.CR7, "192.168.3.124", 60008);
+
+            // examples: calibrated user frame data
+            double[] Pos_Cr7_CalliBase = { 825.25, 6.38, 134.67, -2.11, 46.69, -0.40 };
+            double[] Pos_Cr15_CalliBase = { 1223.50, -1.77, -304.52, 1.61, 44.25, -177.78 };
+            core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
+
+            // step4:
+            // a. install testing tools.
+            // b. tools setting, tcp speed.
+            // c. define scene params.
+            // d. robots move to init position.
+            // e. define user frame
+            //
+            // b. examples: tcp data
+            float[] tcp_cr7 = { -61.7107f, 0, 193.7107f, 0, -45, 0 };
+            float[] tcp_cr15 = { 0, 0, 140, 0, 45, -90 };
+            core.SetTCP(Model.CR15, tcp_cr15);
+            core.SetTCP(Model.CR7, tcp_cr7);
+            core.SetSpeed(Model.CR15, 100);
+            core.SetSpeed(Model.CR7, 100);
+            // c. examples.
+            //double[] param = { 200, 350, 350, 4, 4, 0 };
+            double[] param = { 20, 350, 350, 4, 4, 0 };
+            core.SceneParamInit(SceneName.Scene1C, param);
+            // d.
+            core.SceneRobotInit(SceneName.Scene1C);
+            // e.
+            core.SetUserFrame(Model.CR15);
+            core.SetUserFrame(Model.CR7);
+
+            // step5: Scene1C
+            // Thread th_scene1c = new Thread(() => core.Scene1C(MovementType.QuickCheck));
+            // th_scene1c.Start();
+
+            // Thread th1 = new Thread(() => core.thread_MoveFlag(Model.CR15));
+            // th1.Start();
+
+            core.Scene1C(MovementType.QuickCheck);
+
+            Console.WriteLine("Waiting...");
+
+            // Thread.Sleep(100000000);
+
+            Console.WriteLine("Done");
+        }
+
+        public void DualRobot_Scene1C_Demo_WithCalibration_CityU()
+        {
+            // (1) Connection
+            DualRobotLib.Core core = new Core();
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+            // core.Connect(Model.CR15, "192.168.3.125", 60008);
+            // core.Connect(Model.CR7, "192.168.3.124", 60008);
+
+            // (2) Get Calibrated Co-Frame Data
+            double[] Pos_Cr7_CalliBase = { 825.25, 6.38, 134.67, -2.11, 46.69, -0.40 };
+            double[] Pos_Cr15_CalliBase = { 1223.50, -1.77, -304.52, 1.61, 44.25, -177.78 };
+            core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
+
+            // (3) Get Tool Antenna TCP Data
+            float[] cal_pin_tcp_cr7 = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+            float[] cal_pin_tcp_cr15 = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+            float[] cal_pin_length_cr7 = { 0.0f, 0.0f, 450.0f, 0.0f, 0.0f, 0.0f };
+            float[] cal_pin_length_cr15 = { 0.0f, 0.0f, 450.0f, 0.0f, 0.0f, 0.0f };
+            var fixture_tcp_cr7  = core.GetToolFixtureTCP(Model.CR7,  cal_pin_tcp_cr7, cal_pin_length_cr7);
+            var fixture_tcp_cr15 = core.GetToolFixtureTCP(Model.CR15, cal_pin_tcp_cr15, cal_pin_length_cr15);
+
+            float[] antenna_offset_cr7  = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
+            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
+            var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
+            var tcp_cr15 = core.GetToolAntennaTCP(Model.CR15, fixture_tcp_cr15, antenna_offset_cr15);
+            Console.WriteLine("tcp_cr7: " + tcp_cr7);
+            Console.WriteLine("tcp_cr15: " + tcp_cr15);
+
+            // (4) Robot Initialization
+            // examples: tcp data
+            //float[] tcp_cr7 = { -61.7107f, 0, 193.7107f, 0, -45, 0 };
+            //float[] tcp_cr15 = { 0, 0, 140, 0, 45, -90 };
+            core.SetTCP(Model.CR15, tcp_cr15);
+            core.SetTCP(Model.CR7, tcp_cr7);
+            core.SetSpeed(Model.CR15, 100);
+            core.SetSpeed(Model.CR7, 100);
+
+            // c. examples.
+            //double[] param = { 200, 350, 350, 4, 4, 0 };
+            double[] param = { 20, 350, 350, 4, 4, 0 };
+            core.SceneParamInit(SceneName.Scene1C, param);
+            // d.
+            core.SceneRobotInit(SceneName.Scene1C);
+            // e.
+            core.SetUserFrame(Model.CR15);
+            core.SetUserFrame(Model.CR7);
+
+            // step5: Scene1C
+            // Thread th_scene1c = new Thread(() => core.Scene1C(MovementType.QuickCheck));
+            // th_scene1c.Start();
+
+            // Thread th1 = new Thread(() => core.thread_MoveFlag(Model.CR15));
+            // th1.Start();
+
+            core.Scene1C(MovementType.QuickCheck);
+
+            Console.WriteLine("Waiting...");
+
+            // Thread.Sleep(100000000);
+
+            Console.WriteLine("Done");
         }
 
         public void DualRobot_Scene2_Demo_WithCalibration()
@@ -482,7 +742,7 @@ namespace DualRobotDemo
 
             // examples: rotate plate center data.
             double[] Pos_Cr7_PlateCenter = { 828.51, -50, 61.10, 2.74, 1.11, -90.00 };
-            core.RotationPlateCalibrationInit(Pos_Cr7_PlateCenter);
+            core.SetStationAntennaTCP_Cr7(Pos_Cr7_PlateCenter);
 
             // step4:
             // a. install testing tools.
@@ -511,12 +771,86 @@ namespace DualRobotDemo
             core.Scene2(MovementType.QuickCheck);
         }
 
+        public void DualRobot_Scene2_Demo_WithCalibration_CityU()
+        {
+            // (1) Connection
+            DualRobotLib.Core core = new Core();
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+            // core.Connect(Model.CR15, "192.168.3.125", 60008);
+            // core.Connect(Model.CR7, "192.168.3.124", 60008);
+
+            // (2) Get Calibrated Co-Frame Data
+            double[] Pos_Cr7_CalliBase = { 825.25, 6.38, 134.67, -2.11, 46.69, -0.40 };
+            double[] Pos_Cr15_CalliBase = { 1223.50, -1.77, -304.52, 1.61, 44.25, -177.78 };
+            core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
+
+            // (3) Get Tool Antenna TCP Data
+            float[] cal_pin_tcp_cr7 = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+            float[] cal_pin_tcp_cr15 = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+            float cal_pin_length_cr7 = 450.0f;
+            float cal_pin_length_cr15 = 450.0f;
+            var fixture_tcp_cr7 = core.GetToolFixtureTCP(Model.CR7, cal_pin_tcp_cr7, cal_pin_length_cr7);
+            var fixture_tcp_cr15 = core.GetToolFixtureTCP(Model.CR15, cal_pin_tcp_cr15, cal_pin_length_cr15);
+
+            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
+            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
+            var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
+            var tcp_cr15 = core.GetToolAntennaTCP(Model.CR15, fixture_tcp_cr15, antenna_offset_cr15);
+            Console.WriteLine("tcp_cr7: " + tcp_cr7);
+            Console.WriteLine("tcp_cr15: " + tcp_cr15);
+
+            // (4) Robot Initialization
+            // examples: tcp data
+            //float[] tcp_cr7 = { -61.7107f, 0, 193.7107f, 0, -45, 0 };
+            //float[] tcp_cr15 = { 0, 0, 140, 0, 45, -90 };
+            core.SetTCP(Model.CR15, tcp_cr15);
+            core.SetTCP(Model.CR7, tcp_cr7);
+            core.SetSpeed(Model.CR15, 100);
+            core.SetSpeed(Model.CR7, 100);
+
+            // todo: (5 - Optional) Set Station Antenna TCP (Cr7) (Cal. tool + UF: 0)
+            float[] station_cal_pin_tcp_cr7 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
+            float station_cal_pin_length = 50.0f;
+            var station_center_zero_tcp = core.GetStationCenterZeroTCP(station_cal_pin_tcp_cr7, station_cal_pin_length);
+
+            
+            float[] antenna_offset_station = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
+            float station_offset = 300; // 0-300
+            var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
+            Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
+
+            core.SetStationAntennaTCP_Cr7(station_antenna_tcp_cr7);
+
+            // (6) 
+            // c. examples.
+            double[] param = { 430, 100, 10, 250, 90, 45 };
+            core.SceneParamInit(SceneName.Scene2, param);
+            // d.
+            core.SceneRobotInit(SceneName.Scene2);
+            // e.
+            core.SetUserFrame(Model.CR15);
+            core.SetUserFrame(Model.CR7);
+
+            // step5: Scene2
+            core.Scene2(MovementType.QuickCheck);
+        }
+
         /// Motor
         public void SerialPortTest()
         {
             DualRobotLib.Core core = new Core();
 
             core.MotorInitTest();
+        }
+
+        /// I/O Module
+        public void IOModuleTest()
+        {
+            DualRobotLib.Core core = new Core();
+
+            core.IOModuleTest();
+
         }
 
         public void threadDemo()
@@ -534,6 +868,7 @@ namespace DualRobotDemo
             //         _callbackMethod = callbackMethod;
             //     }
             //
+                  // do something and return value.
             //     public void PrintSumOfNumbers()
             //     {
             //         int sum = 0;
@@ -546,12 +881,17 @@ namespace DualRobotDemo
             //             _callbackMethod(sum);
             //     }
             // }
-            //
+            // 
+               // thread 1
+
             // public static void PrintSum(int sum)
             // {
             //     Console.WriteLine("Sum of numbers = " + sum);
             // }
             //
+
+               // thread 1
+
             // public MainWindow()
             // {
             //     int target = 5;
