@@ -107,6 +107,54 @@ namespace DualRobotDemo
             // th1.Start();
         }
 
+        public void BasicMovementDemo()
+        {
+            DualRobotLib.Core core = new Core();
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+
+            // For Cr15
+
+            // 1. Get UF Cur Pos
+            var uf_pos = core.GetUFCurPos(Model.CR15);
+
+            // 2. Get RB Cur Pos
+            var rb_pos = core.GetRBCurPos(Model.CR15);
+
+            // 3. UFMove
+            float[] tcp_cr15 = { 0, 0, 140, 0, 45, -90 };
+            core.SetTCP(Model.CR15, tcp_cr15);
+            core.SetUserFrame(Model.CR15);
+
+            double[] pos = new[] { 0.0, 0.0, 200, 0.0, 0.0, 0.0 };
+            core.UFMove(Model.CR15, pos);
+
+            // 4. RBMove
+            double[] pos1 = new[] { 1277.247, 4.829875, 100.56811, -178.5574, 36.90373, -178.0444 };
+            core.UFMove(Model.CR15, pos1);
+
+            // For Cr7
+
+            // 1. Get UF Cur Pos
+            var uf_pos1 = core.GetUFCurPos(Model.CR7);
+
+            // 2. Get RB Cur Pos
+            var rb_pos1 = core.GetRBCurPos(Model.CR7);
+
+            // 3. UFMove
+            float[] tcp_cr7 = { 9, 0, 123, 0, -45, 0 };
+            core.SetTCP(Model.CR7, tcp_cr7);
+            core.SetUserFrame(Model.CR7);
+
+            double[] pos2 = new[] { 0.0, 0.0, 50, 0.0, 0.0, 0.0 };
+            core.UFMove(Model.CR7, pos2);
+
+            // 4. RBMove
+            double[] pos3 = new[] { 624.72, 4.60, 270.40, -1.87, 39.35, -0.05 };
+            core.UFMove(Model.CR7, pos3);
+            
+        }
+
         /// CR7
         public void CR7_MoveTo_Demo()
         {
@@ -192,43 +240,26 @@ namespace DualRobotDemo
         public void CR15_BasicMovement_Demo()
         {
             DualRobotLib.Core core = new Core();
-
-            // 1. establish connection
             core.Connect(Model.CR15, "127.0.0.1", 9021);
-            // core.Connect(Model.CR15, "192.168.3.125", 60008);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
 
-            // 2. movement test
+            // Get UF Cur Pos
+            var uf_pos = core.GetUFCurPos(Model.CR15);
 
-            // 2.1 define the tcp
-            float[] tcp_cr15 = { 0, 55, 700, 0, 0, 0 };
+            // Get RB Cur Pos
+            var rb_pos = core.GetRBCurPos(Model.CR15);
+
+            // UFMove
+            float[] tcp_cr15 = { 0, 0, 140, 0, 45, -90 };
             core.SetTCP(Model.CR15, tcp_cr15);
-
-            // 2.2 define the tcp speed
-            core.SetSpeed(Model.CR15, 100);
-
-            // 2.3 define the user frame
             core.SetUserFrame(Model.CR15);
 
-            // 2.4.1 Set Single Point
-            float[] pos_cr15 = { 50, 0, 0, 0, 0, 0 };
-            core.SetSinglePoint(Model.CR15, pos_cr15);
+            double[] pos = new[] { 0.0, 0.0, 200, 0.0, 0.0, 0.0 };
+            core.UFMove(Model.CR15, pos);
 
-            // 2.4.2 Move
-            core.MoveSinglePoint(Model.CR15);
-
-            // 2.4.3 Set Single Point
-            float[] pos_cr15_2 = { -50, 0, 0, 0, 0, 0 };
-            core.SetSinglePoint(Model.CR15, pos_cr15_2);
-
-            // 2.4.4 Move
-            core.MoveSinglePoint(Model.CR15);
-
-            // 2.4.5 Set Single Point
-            float[] pos_cr15_3 = { 0, 0, 0, 0, 0, 0 };
-            core.SetSinglePoint(Model.CR15, pos_cr15_3);
-
-            // 2.4.6 Move
-            core.MoveSinglePoint(Model.CR15);
+            // RBMove
+            double[] pos1 = new[] { 1277.247, 4.829875, 100.56811, -178.5574, 36.90373, -178.0444 };
+            core.UFMove(Model.CR15, pos1);
         }
 
         /// DualRobot
@@ -404,7 +435,7 @@ namespace DualRobotDemo
             core.SetSpeed(Model.CR15, 100);
             core.SetSpeed(Model.CR7, 100);
             // c. examples.
-            double[] param = { 250, 300, 300, 10, 10, 0 };
+            double[] param = { 250, 300, 300, 100, 100, 0 };
             core.SceneParamInit(SceneName.Scene1C, param);
             // d.
             core.SceneRobotInit(SceneName.Scene1C);
