@@ -40,8 +40,8 @@ namespace DualRobotDemo
             // % Pos_Cr15_CalliBase 
             // % cal-0: 1249.821, 22.977, -774.474, 0.149, 0.109, 89.261
             // % cal-1: 1252.218, 23.278, -722.122, 0.082, 0.179, 89.359
-            double[] Pos_Cr7_CalliBase = { 779.422, -37.794, -339.305, 0.351, 0.523, -92.267 };
-            double[] Pos_Cr15_CalliBase = { 1249.821, 22.977, -774.474, 0.149, 0.109, 89.261 };
+            double[] Pos_Cr7_CalliBase = { 779.282, -38.284, -286.598, 0.588, 0.510, -92.060 };
+            double[] Pos_Cr15_CalliBase = { 1252.218, 23.278, -722.122, 0.082, 0.179, 89.359 };
             core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);  
 
             // (3) Get Tool Antenna TCP Data 

@@ -671,8 +671,8 @@ namespace DualRobotDemo
             // % Pos_Cr15_CalliBase 
             // % cal-0: 1249.821, 22.977, -774.474, 0.149, 0.109, 89.261
             // % cal-1: 1252.218, 23.278, -722.122, 0.082, 0.179, 89.359
-            double[] Pos_Cr7_CalliBase = { 779.422, -37.794, -339.305, 0.351, 0.523, -92.267 };
-            double[] Pos_Cr15_CalliBase = { 1249.821, 22.977, -774.474, 0.149, 0.109, 89.261 };
+            double[] Pos_Cr7_CalliBase = { 779.282, -38.284, -286.598, 0.588, 0.510, -92.060 };
+            double[] Pos_Cr15_CalliBase = { 1252.218, 23.278, -722.122, 0.082, 0.179, 89.359 };
             core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
 
             // (3) Get Tool Antenna TCP Data 
@@ -806,24 +806,41 @@ namespace DualRobotDemo
             DualRobotLib.Core core = new Core();
             core.Connect(Model.CR15, "127.0.0.1", 9021);
             core.Connect(Model.CR7, "127.0.0.1", 60008);
-            // core.Connect(Model.CR15, "192.168.3.125", 60008);
-            // core.Connect(Model.CR7, "192.168.3.124", 60008);
+            // core.Connect(Model.CR15, "192.168.0.125", 60008);
+            // core.Connect(Model.CR7, "192.168.0.124", 60008);
 
             // (2) Get Calibrated Co-Frame Data
-            double[] Pos_Cr7_CalliBase = { 825.25, 6.38, 134.67, -2.11, 46.69, -0.40 };
-            double[] Pos_Cr15_CalliBase = { 1223.50, -1.77, -304.52, 1.61, 44.25, -177.78 };
+            // % Pos_Cr7_CalliBase 
+            // % cal-0: 779.422, -37.794,-339.305, 0.351, 0.523, -92.267
+            // % cal-1: 779.282, -38.284, -286.598, 0.588, 0.510, -92.060
+            //
+            // % Pos_Cr15_CalliBase 
+            // % cal-0: 1249.821, 22.977, -774.474, 0.149, 0.109, 89.261
+            // % cal-1: 1252.218, 23.278, -722.122, 0.082, 0.179, 89.359
+            double[] Pos_Cr7_CalliBase = { 779.282, -38.284, -286.598, 0.588, 0.510, -92.060 };
+            double[] Pos_Cr15_CalliBase = { 1252.218, 23.278, -722.122, 0.082, 0.179, 89.359 };
             core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
 
-            // (3) Get Tool Antenna TCP Data
-            float[] cal_pin_tcp_cr7 = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-            float[] cal_pin_tcp_cr15 = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-            float cal_pin_length_cr7 = 450.0f;
-            float cal_pin_length_cr15 = 450.0f;
+            // (3) Get Tool Antenna TCP Data 
+
+            float[] origin_wpr_cr7 = { 176.753f, 8.741f, 174.332f };
+            float[] default_wpr_cr7 = { -3.884f, 53.543f, -9.229f };
+
+            float[] origin_wpr_cr15 = { -0.596f, 29.023f, -2.64f };
+            float[] default_wpr_cr15 = { 105.071f, -0.865f, 89.288f };
+
+            var cal_wpr_cr7 = core.GetToolFixtureWPR(SceneName.Scene1B, Model.CR7, origin_wpr_cr7, default_wpr_cr7);
+            var cal_wpr_cr15 = core.GetToolFixtureWPR(SceneName.Scene1B, Model.CR15, origin_wpr_cr15, default_wpr_cr15);
+
+            float[] cal_pin_tcp_cr7 = { -61.97f, 1.016f, 193.006f, cal_wpr_cr7[0], cal_wpr_cr7[1], cal_wpr_cr7[2] };
+            float[] cal_pin_tcp_cr15 = { -1.946f, -35.828f, 174.092f, cal_wpr_cr15[0], cal_wpr_cr15[1], cal_wpr_cr15[2] };
+            float cal_pin_length_cr7 = 45.23f + 5.02f;
+            float cal_pin_length_cr15 = 45.33f + 5.02f;
             var fixture_tcp_cr7 = core.GetToolFixtureTCP(Model.CR7, cal_pin_tcp_cr7, cal_pin_length_cr7);
             var fixture_tcp_cr15 = core.GetToolFixtureTCP(Model.CR15, cal_pin_tcp_cr15, cal_pin_length_cr15);
 
-            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
-            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
+            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 16.05f, 0.0f, 0.0f, 0.0f };
+            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 16.03f, 0.0f, 0.0f, 0.0f };
             var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
             var tcp_cr15 = core.GetToolAntennaTCP(Model.CR15, fixture_tcp_cr15, antenna_offset_cr15);
             Console.WriteLine("tcp_cr7: " + tcp_cr7);
@@ -840,7 +857,7 @@ namespace DualRobotDemo
 
             // todo: (5 - Optional) Set Station Antenna TCP (Cr7) (Cal. tool + UF: 0)
             float[] station_cal_pin_tcp_cr7 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
-            float station_cal_pin_length = 50.0f;
+            float station_cal_pin_length = 110.2f;
             var station_center_zero_tcp = core.GetStationCenterZeroTCP(station_cal_pin_tcp_cr7, station_cal_pin_length);
 
             float[] antenna_offset_station = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
