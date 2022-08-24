@@ -773,6 +773,8 @@ namespace DualRobotDemo
             // offset-2: cr7: 16.05f; cr15: 16.03f;
             // offset-3: cr7: 71.53f; cr15: 16.02f;
             // offset-4: cr7: 16.05f; cr15: 16.02f;
+            // offset-5: cr7: 71.53f; cr15: 105.13f;
+            // offset-6: cr7: 16.05f; cr15: 105.13f;
             float[] antenna_offset_cr7 = { 0.0f, 0.0f, 16.05f, 0.0f, 0.0f, 0.0f };
             float[] antenna_offset_cr15 = { 0.0f, 0.0f, 16.02f, 0.0f, 0.0f, 0.0f };
             var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
