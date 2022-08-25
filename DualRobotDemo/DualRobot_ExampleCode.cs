@@ -775,8 +775,9 @@ namespace DualRobotDemo
             // offset-4: cr7: 16.05f; cr15: 16.02f;
             // offset-5: cr7: 71.53f; cr15: 105.13f;
             // offset-6: cr7: 16.05f; cr15: 105.13f;
-            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 16.05f, 0.0f, 0.0f, 0.0f };
-            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 16.02f, 0.0f, 0.0f, 0.0f };
+            // offset-7: cr7: 45.14f; cr15: 105.13f;
+            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 45.14f, 0.0f, 0.0f, 0.0f };
+            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 105.13f, 0.0f, 0.0f, 0.0f };
             var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
             var tcp_cr15 = core.GetToolAntennaTCP(Model.CR15, fixture_tcp_cr15, antenna_offset_cr15);
             Console.WriteLine("tcp_cr7: " + tcp_cr7);
@@ -868,17 +869,19 @@ namespace DualRobotDemo
 
             // (4) Robot Initialization
             // examples: tcp data
-            float[] tcp_cr7 = { -125, 130, 55, 90, 0, -180 };
+            float[] tcp_cr7 = { -125, 180, 85, 90, 0, -180 };
             // tcp_cr7 - sim1: -125, 50, 45, 90, 0, 180
-            // tcp_cr7 - sim2: -125, 130, 55, 90, 0, -180
-            float[] tcp_cr15 = { 0, 0, 260, 0, 0, -90 };
+            // tcp_cr7 - sim2: -125, 130, 55, 90, 0, -180 //v
+            // tcp_cr7 - sim3: -125, 180, 85, 90, 0, -180 //v
+            float[] tcp_cr15 = { 0, 0, 300, 0, 0, -90 };
             // tcp_cr15 - sim1: 0, 134, 182, 0, 0, 90
             // tcp_cr15 - sim2: 0, 200, 182, 0, 0, 90
             // tcp_cr15 - sim3: 0, 200, 248, 0, 0, 90
             // tcp_cr15 - sim4: 0, 324, 110, 0, 0, 90
             // tcp_cr15 - sim5: 0, 250, 220, 0, 0, 90 
-            // tcp_cr15 - sim6: 0, 0,   215, 0, 0, -90 // v
-            // tcp_cr15 - sim7: 0, 0,   260, 0, 0, -90
+            // tcp_cr15 - sim6: 0, 0,   215, 0, 0, -90
+            // tcp_cr15 - sim7: 0, 0,   260, 0, 0, -90 // v
+            // tcp_cr15 - sim8: 0, 0,   300, 0, 0, -90 // v
 
             core.SetTCP(Model.CR15, tcp_cr15);
             core.SetTCP(Model.CR7, tcp_cr7);
@@ -891,10 +894,9 @@ namespace DualRobotDemo
             var station_center_zero_tcp = core.GetStationCenterZeroTCP(station_cal_pin_tcp_cr7, station_cal_pin_length);
 
             float[] antenna_offset_station = { 0.0f, 0.0f, 110.2f, 0.0f, 0.0f, 0.0f };
-            float station_offset = 300; // 0-300 
-            // station_offset 1: 440 x
-            // station_offset 2: 540 v
-            // station_offset 3: 640 v 
+            float station_offset = 350; // 0-300 
+            // station_offset 1: 300 //v
+            // station_offset 2: 350
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
             Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
@@ -903,7 +905,7 @@ namespace DualRobotDemo
 
             // (6) 
             // c. examples.
-            double[] param = { 250, 100, 10, 200, 90, 45, 180, 30, 100, 10 };
+            double[] param = { 20, 100, 10, 200, 90, 45, 180, 30, 100, 10 };
             core.SceneParamInit(SceneName.Scene2, param);
             // d.
             core.SceneRobotInit(SceneName.Scene2);
