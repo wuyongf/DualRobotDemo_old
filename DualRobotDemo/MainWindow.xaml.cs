@@ -82,7 +82,7 @@ namespace DualRobotDemo
             float[] tcp_cr7 = { -125, 180, 85, 90, 0, -180 };
             // tcp_cr7 - sim1: -125, 50, 45, 90, 0, 180
             // tcp_cr7 - sim2: -125, 130, 55, 90, 0, -180 //v
-            // tcp_cr7 - sim3: -125, 180, 85, 90, 0, -180
+            // tcp_cr7 - sim3: -125, 180, 85, 90, 0, -180 //v
             float[] tcp_cr15 = { 0, 0, 300, 0, 0, -90 };
             // tcp_cr15 - sim1: 0, 134, 182, 0, 0, 90
             // tcp_cr15 - sim2: 0, 200, 182, 0, 0, 90
@@ -91,7 +91,7 @@ namespace DualRobotDemo
             // tcp_cr15 - sim5: 0, 250, 220, 0, 0, 90 
             // tcp_cr15 - sim6: 0, 0,   215, 0, 0, -90
             // tcp_cr15 - sim7: 0, 0,   260, 0, 0, -90 // v
-            // tcp_cr15 - sim8: 0, 0,   300, 0, 0, -90
+            // tcp_cr15 - sim8: 0, 0,   300, 0, 0, -90 // v
 
             core.SetTCP(Model.CR15, tcp_cr15);
             core.SetTCP(Model.CR7, tcp_cr7);
