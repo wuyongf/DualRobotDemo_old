@@ -811,7 +811,6 @@ namespace DualRobotDemo
 
             core.Scene1C(MovementType.QuickCheck);
         }
-
         public void DualRobot_Scene2_CityU_Sim()
         {
             // (1) Connection
@@ -860,8 +859,22 @@ namespace DualRobotDemo
 
             // (4) Robot Initialization
             // examples: tcp data
-            float[] tcp_cr7 = { -125, 180, 85, 90, 0, -180 };
-            float[] tcp_cr15 = { 0, 0, 300, 0, 0, -90 };
+            float[] tcp_cr7 = { -125, 180, 135, 90, 0, -180 };
+            float[] tcp_cr15 = { 0, 0, 355, 0, 0, -90 };
+
+            // config1: cr7: -125, 180, 85, 90, 0, -180
+            // config1: cr15: 0, 0, 300, 0, 0, -90 // x-105
+
+            // with antenna
+            // config2: cr7: -125, 180, 135, 90, 0, -180
+            // config2: cr15: 0, 0, 325, 0, 0, -90 // x-80
+
+            // config3: cr7: -125, 180, 135, 90, 0, -180
+            // config3: cr15: 0, 0, 355, 0, 0, -90 //x -50
+
+            // test-1: cr15: 0, -110, 185, 0, 45, -90 // xxx
+            // test-2: cr15: 0, -140, 185, 0, 0, -90 // xxx
+            // test-3: cr15: 0, -30, 170, 0, -30, -90 // xxx
 
             core.SetTCP(Model.CR15, tcp_cr15);
             core.SetTCP(Model.CR7, tcp_cr7);
@@ -874,7 +887,10 @@ namespace DualRobotDemo
             var station_center_zero_tcp = core.GetStationCenterZeroTCP(station_cal_pin_tcp_cr7, station_cal_pin_length);
 
             float[] antenna_offset_station = { 0.0f, 0.0f, 110.2f, 0.0f, 0.0f, 0.0f };
-            float station_offset = 350; // 0-300 
+            float station_offset = 500; // 0-300
+                                        // config1: 350
+                                        // config2: 400
+                                        // config3: 500
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
             Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
@@ -883,7 +899,8 @@ namespace DualRobotDemo
 
             // (6) Scene Initialization
             // a. examples.
-            double[] param = { 250, 90, 10, 180, 30, 20, 45, 22, 290 };
+            // double[] param = { 250, 90, 10, 180, 30, 20, 45, 22, 290 };
+            double[] param = { 250, 90, 10, 180, 90, 200, 45, 22, 290 };
             core.SceneParamInit(SceneName.Scene2_Sim, param);
             // b.
             core.SceneRobotInit(SceneName.Scene2_Sim);
