@@ -112,7 +112,7 @@ namespace DualRobotDemo
             // (6) Scene Initialization
             // a. examples.
             // double[] param = { 250, 90, 10, 180, 30, 20, 45, 22, 290 };
-            double[] param = { 250, 90, 10, 180, 90, 200, 45, 22, 290 };
+            double[] param = { 250, 90, 10, 180, 30, 200, 45, 22, 290 };
             core.SceneParamInit(SceneName.Scene2_Sim, param);
             // b.
             core.SceneRobotInit(SceneName.Scene2_Sim);
