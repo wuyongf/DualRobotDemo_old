@@ -889,10 +889,7 @@ namespace DualRobotDemo
             var station_center_zero_tcp = core.GetStationCenterZeroTCP(station_cal_pin_tcp_cr7, station_cal_pin_length);
 
             float[] antenna_offset_station = { 0.0f, 0.0f, 110.2f, 0.0f, 0.0f, 0.0f };
-            float station_offset = 500; // 0-300
-                                        // config1: 350
-                                        // config2: 400
-                                        // config3: 500
+            float station_offset = 500; // 0-290
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
             Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
@@ -903,7 +900,7 @@ namespace DualRobotDemo
             // a. examples.
             // double[] param = { 250, 90, 10, 180, 30, 20, 45, 22, 290 };
             // double[] param = { 250, 90, 10, 180, 30, 200, 45, 22, 290 };
-            double[] param = { 160, 90, 10, 180, 30, 20, 45, 22, 290 };
+            double[] param = { 160, 90, 10, 180, 30, 50, 45, 22, 290 };
             core.SceneParamInit(SceneName.Scene2_Sim, param);
             // b.
             core.SceneRobotInit(SceneName.Scene2_Sim);
