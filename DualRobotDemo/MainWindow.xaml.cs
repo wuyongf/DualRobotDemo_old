@@ -27,10 +27,10 @@ namespace DualRobotDemo
         {
             // (1) Connection
             DualRobotLib.Core core = new Core();
-            core.Connect(Model.CR15, "127.0.0.1", 9021);
-            core.Connect(Model.CR7, "127.0.0.1", 60008);
-            // core.Connect(Model.CR15, "192.168.0.125", 60008);
-            // core.Connect(Model.CR7, "192.168.0.124", 60008);
+            // core.Connect(Model.CR15, "127.0.0.1", 9021);
+            // core.Connect(Model.CR7, "127.0.0.1", 60008);
+            core.Connect(Model.CR15, "192.168.0.125", 60008);
+            core.Connect(Model.CR7, "192.168.0.124", 60008);
 
             // (2) Get Calibrated Co-Frame Data
             // % cal-2: current error: 0.2mm
@@ -47,49 +47,22 @@ namespace DualRobotDemo
 
             var cal_wpr_cr7 = core.GetToolFixtureWPR(SceneName.Scene2_Sim, Model.CR7, origin_wpr_cr7, default_wpr_cr7);
             var cal_wpr_cr15 = core.GetToolFixtureWPR(SceneName.Scene2_Sim, Model.CR15, origin_wpr_cr15, default_wpr_cr15);
-            
+
             float[] cal_pin_tcp_cr7 = { -122.4f, 187.9f, 135.0f, cal_wpr_cr7[0], cal_wpr_cr7[1], cal_wpr_cr7[2] };
             float[] cal_pin_tcp_cr15 = { 0.0f, -11.8f, 355.0f, cal_wpr_cr15[0], cal_wpr_cr15[1], cal_wpr_cr15[2] };
             float cal_pin_length_cr7 = 50.0f;
             float cal_pin_length_cr15 = 105.0f;
             var fixture_tcp_cr7 = core.GetToolFixtureTCP(Model.CR7, cal_pin_tcp_cr7, cal_pin_length_cr7);
             var fixture_tcp_cr15 = core.GetToolFixtureTCP(Model.CR15, cal_pin_tcp_cr15, cal_pin_length_cr15);
-            
+
             // offset-1: cr7: 6.27f;  cr15:6.24f;
             // offset-2: cr7: 16.05f; cr15: 16.03f;
             float[] antenna_offset_cr7 = { 0.0f, 0.0f, 50.0f, 0.0f, 0.0f, 0.0f };
             float[] antenna_offset_cr15 = { 0.0f, 0.0f, 105.0f, 0.0f, 0.0f, 0.0f };
             var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
             var tcp_cr15 = core.GetToolAntennaTCP(Model.CR15, fixture_tcp_cr15, antenna_offset_cr15);
-            Console.WriteLine("tcp_cr7: " + tcp_cr7);
-            Console.WriteLine("tcp_cr15: " + tcp_cr15);
 
             // (4) Robot Initialization
-            #region examples: tcp data
-
-            // float[] tcp_cr7 = { -125, 180, 135, 0, 0, -90 };
-            // float[] tcp_cr15 = { 0, 0, 355, 0, 0, 90 };
-
-            // config1: cr7: -125, 180, 85, 90, 0, -180
-            // config1: cr15: 0, 0, 300, 0, 0, -90 // x-105
-
-            // with antenna
-            // config2: cr7: -125, 180, 135, 90, 0, -180
-            // config2: cr15: 0, 0, 325, 0, 0, -90 // x-80
-
-            // config3: cr7: -125, 180, 135, 90, 0, -180
-            // config3: cr15: 0, 0, 355, 0, 0, -90 //x -50
-
-            // test-1: cr15: 0, -110, 185, 0, 45, -90 // xxx
-            // test-2: cr15: 0, -140, 185, 0, 0, -90 // xxx
-            // test-3: cr15: 0, -30, 170, 0, -30, -90 // xxx
-
-            // final version:
-            // cr7: -125, 180, 135, 90, 0, -180
-            // cr15: 0, 0, 355, 0, 0, -90
-
-            #endregion
-
             core.SetTCP(Model.CR15, tcp_cr15);
             core.SetTCP(Model.CR7, tcp_cr7);
             core.SetSpeed(Model.CR15, 100);
@@ -102,7 +75,7 @@ namespace DualRobotDemo
 
             float[] antenna_offset_station = { 0.0f, 0.0f, 110.2f, 0.0f, 0.0f, 0.0f };
             float station_offset = 500; // 0-290
-            
+
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
             Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
 
@@ -112,7 +85,7 @@ namespace DualRobotDemo
             // a. examples.
             // double[] param = { 250, 90, 10, 180, 30, 20, 45, 22, 290 };
             // double[] param = { 250, 90, 10, 180, 30, 200, 45, 22, 290 };
-            double[] param = { 160, 90, 10, 180, 30, 50, 45, 22, 290 };
+            double[] param = { 250, 90, 10, 180, 30, 200, 45, 45, 175 };
             core.SceneParamInit(SceneName.Scene2_Sim, param);
             // b.
             core.SceneRobotInit(SceneName.Scene2_Sim);
@@ -121,7 +94,9 @@ namespace DualRobotDemo
             core.SetUserFrame(Model.CR7);
 
             // (7) Execute Scene2_Sim
-            core.Scene2_Sim(MovementType.QuickCheck);
+            // core.Scene2_Sim(MovementType.QuickCheck);
+            core.Scene2(MovementType.QuickCheck);
+            // todo: Modify Scene2()
         }
 
         void thread_MoveFlage_Motor(ref DualRobotLib.Core core)
