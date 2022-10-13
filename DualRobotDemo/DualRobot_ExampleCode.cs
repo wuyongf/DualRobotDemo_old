@@ -425,7 +425,9 @@ namespace DualRobotDemo
             // Thread th1 = new Thread(() => core.thread_MoveFlag(Model.CR15));
             // th1.Start();
 
-            core.Scene1C(MovementType.QuickCheck);
+            core.Scene1C(MovementType.QuickCheck, MovementStage.One);
+
+            core.Scene1C(MovementType.QuickCheck, MovementStage.Two);
         }
         public void DualRobot_Scene2_CityU_Sim()
         {
@@ -501,7 +503,19 @@ namespace DualRobotDemo
             core.SetUserFrame(Model.CR7);
 
             // (8) Execute Scene2_Sim
-            core.Scene2_Sim(MovementType.QuickCheck);
+            //
+            core.Scene2_Sim(MovementType.QuickCheck, MovementStage.One);
+
+            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.Scene2_Sim(MovementType.QuickCheck, MovementStage.Two);
+
+            param[1] = 20;
+            core.SceneParamInit(SceneName.Scene2_Sim, param);
+            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.Scene2_Sim(MovementType.QuickCheck, MovementStage.Three);
+
+            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.Scene2_Sim(MovementType.QuickCheck, MovementStage.Four);
         }
         public void DualRobot_Scene2_CityU()
         {
@@ -580,8 +594,20 @@ namespace DualRobotDemo
             core.SetUserFrame(Model.CR15);
             core.SetUserFrame(Model.CR7);
 
-            // (8) Execute Scene2
-            core.Scene2(MovementType.QuickCheck);
+            // (8) Execute Scene2_Sim
+            //
+            core.Scene2(MovementType.QuickCheck, MovementStage.One);
+
+            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.Scene2(MovementType.QuickCheck, MovementStage.Two);
+
+            param[1] = 20;
+            core.SceneParamInit(SceneName.Scene2_Sim, param);
+            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.Scene2(MovementType.QuickCheck, MovementStage.Three);
+
+            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.Scene2(MovementType.QuickCheck, MovementStage.Four);
         }
 
         // Motor
