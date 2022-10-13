@@ -485,14 +485,14 @@ namespace DualRobotDemo
 
             core.SetStationAntennaTCP_Cr7(station_antenna_tcp_cr7);
 
-            // (6) Align LiftTable Length with station_center_zero_tcp
-            double lift_table_align_length = 141.025;
+            // (6) Align LiftTable Height with station_center_zero_tcp
+            double lift_table_align_height = 141.025;
 
             // (7) Scene Initialization
             // a. examples.
             // double[] param = { 250, 90, 10, 180, 30, 20, 45, 22, 290 };
             // double[] param = { 250, 90, 10, 180, 30, 200, 45, 22, 290 };
-            double[] param = { 160, 90, 10, 180, 30, 100, 45, 0, 140, lift_table_align_length };
+            double[] param = { 160, 90, 10, 180, 30, 100, 45, 0, 140, lift_table_align_height };
             core.SceneParamInit(SceneName.Scene2_Sim, param);
             // b.
             core.SceneRobotInit(SceneName.Scene2_Sim);
