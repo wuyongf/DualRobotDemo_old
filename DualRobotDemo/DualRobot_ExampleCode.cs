@@ -598,15 +598,15 @@ namespace DualRobotDemo
             //
             core.Scene2(MovementType.QuickCheck, MovementStage.One);
 
-            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.SceneRobotInit(SceneName.Scene2);
             core.Scene2(MovementType.QuickCheck, MovementStage.Two);
 
             param[1] = 20;
-            core.SceneParamInit(SceneName.Scene2_Sim, param);
-            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.SceneParamInit(SceneName.Scene2, param);
+            core.SceneRobotInit(SceneName.Scene2);
             core.Scene2(MovementType.QuickCheck, MovementStage.Three);
 
-            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.SceneRobotInit(SceneName.Scene2);
             core.Scene2(MovementType.QuickCheck, MovementStage.Four);
         }
 
