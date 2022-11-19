@@ -617,6 +617,7 @@ namespace DualRobotDemo
             core.SceneParamInit(SceneName.Scene2, param);
             core.SceneRobotInit(SceneName.Scene2, Model.Null, MovementStage.Four);
             core.Scene2(MovementType.QuickCheck, MovementStage.Four);
+
         }
         public void DualRobot_Scene1A_CityU_Sim()
         {
