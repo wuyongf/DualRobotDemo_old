@@ -93,7 +93,7 @@ namespace DualRobotDemo
 
             // (7) Scene Initialization
             // a. examples.
-            double[] param = { 160, 180, 10, 360, 180, 13, lift_table_align_error, stage34_fixture_height };
+            double[] param = { 160, 180, 10, 180, 90, 13, lift_table_align_error, stage34_fixture_height };
             core.SceneParamInit(SceneName.Scene1A, param);
             // b.
             core.SceneRobotInit(SceneName.Scene1A);
