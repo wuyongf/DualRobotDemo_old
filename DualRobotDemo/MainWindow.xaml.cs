@@ -27,10 +27,16 @@ namespace DualRobotDemo
         {
             // (1) Connection
             DualRobotLib.Core core = new Core();
-            core.Connect(Model.CR15, "127.0.0.1", 9021);
-            core.Connect(Model.CR7, "127.0.0.1", 60008);
-            // core.Connect(Model.CR15, "192.168.0.125", 60008);
-            // core.Connect(Model.CR7, "192.168.0.124", 60008);
+            //core.Connect(Model.CR15, "127.0.0.1", 9021);
+            //core.Connect(Model.CR7, "127.0.0.1", 60008);
+            core.Connect(Model.CR15, "192.168.0.125", 60008);
+            core.Connect(Model.CR7, "192.168.0.124", 60008);
+
+            core.Connect(Model.LiftTable, "192.168.0.119", 50000, "COM4");
+            core.Connect(Model.Motor, "COM3");
+
+            core.MotorInit();
+            core.LiftTableInit();
 
             // (2) Get Calibrated Co-Frame Data
             // % cal-2: current error: 0.2mm
@@ -57,8 +63,8 @@ namespace DualRobotDemo
 
             // offset-1: cr7: 6.27f;  cr15:6.24f;
             // offset-2: cr7: 16.05f; cr15: 16.03f;
-            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 16.05f, 0.0f, 0.0f, 0.0f };
-            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 105.13f, 0.0f, 0.0f, 0.0f };
+            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 50.25f, 0.0f, 0.0f, 0.0f };
+            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 50.35f, 0.0f, 0.0f, 0.0f };
             var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
             var tcp_cr15 = core.GetToolAntennaTCP(Model.CR15, fixture_tcp_cr15, antenna_offset_cr15);
 
@@ -74,13 +80,12 @@ namespace DualRobotDemo
             var station_center_zero_tcp = core.GetStationCenterZeroTCP(station_cal_pin_tcp_cr7, station_cal_pin_length);
 
             float[] antenna_offset_station = { 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f };
-            float station_offset = 0; // 0-290
+            float station_offset = 0;
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
             Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
 
             core.SetStationAntennaTCP_Cr7(station_antenna_tcp_cr7);
-
 
             // (6) Align LiftTable Height with station_center_zero_tcp
             double lift_table_align_error = 1.025;
@@ -88,33 +93,20 @@ namespace DualRobotDemo
 
             // (7) Scene Initialization
             // a. examples.
-            double[] param = { 160, 90, 10, 180, 30, 100, 45, 0, 140, lift_table_align_error, stage34_fixture_height };
-
-            core.SceneParamInit(SceneName.Scene2_Sim, param);
+            double[] param = { 160, 180, 10, 360, 180, 13, lift_table_align_error, stage34_fixture_height };
+            core.SceneParamInit(SceneName.Scene1A, param);
             // b.
-            core.SceneRobotInit(SceneName.Scene2_Sim);
+            core.SceneRobotInit(SceneName.Scene1A);
             // c.
             core.SetUserFrame(Model.CR15);
             core.SetUserFrame(Model.CR7);
 
-            // (8) Execute Scene2_Sim
+            // (8) Execute Scene1A
             //
-            core.Scene2_Sim(MovementType.QuickCheck, MovementStage.One);
+            core.Scene1A(MovementType.QuickCheck, MovementStage.One);
 
-            core.SceneRobotInit(SceneName.Scene2_Sim);
-            core.Scene2_Sim(MovementType.QuickCheck, MovementStage.Two);
-
-            param[1] = 20;
-            param[8] = 13;
-            core.SceneParamInit(SceneName.Scene2_Sim, param);
-            core.SceneRobotInit(SceneName.Scene2_Sim, Model.Null, MovementStage.Three);
-            core.Scene2_Sim(MovementType.QuickCheck, MovementStage.Three);
-
-            param[1] = 20;
-            param[8] = 13;
-            core.SceneParamInit(SceneName.Scene2_Sim, param);
-            core.SceneRobotInit(SceneName.Scene2_Sim, Model.Null, MovementStage.Four);
-            core.Scene2_Sim(MovementType.QuickCheck, MovementStage.Four);
+            core.SceneRobotInit(SceneName.Scene1A);
+            core.Scene1A(MovementType.QuickCheck, MovementStage.Two);
         }
 
         void thread_MoveFlage_Motor(ref DualRobotLib.Core core)

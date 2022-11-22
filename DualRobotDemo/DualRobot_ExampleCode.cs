@@ -598,7 +598,7 @@ namespace DualRobotDemo
             core.SceneRobotInit(SceneName.Scene2);
             // c.
             core.SetUserFrame(Model.CR15);
-            core.SetUserFrame(Model.CR7);
+            core.SetUserFrame(Model.CR7); 
 
             // (8) Execute Scene2
             core.Scene2(MovementType.QuickCheck, MovementStage.One);
@@ -763,11 +763,11 @@ namespace DualRobotDemo
 
             // (6) Align LiftTable Height with station_center_zero_tcp
             double lift_table_align_error = 1.025;
-
+            double stage34_fixture_height = 127;
 
             // (7) Scene Initialization
             // a. examples.
-            double[] param = { 160, 180, 10, 360, 180, 140, lift_table_align_error };
+            double[] param = { 160, 180, 10, 360, 180, 13, lift_table_align_error, stage34_fixture_height };
             core.SceneParamInit(SceneName.Scene1A, param);
             // b.
             core.SceneRobotInit(SceneName.Scene1A);
