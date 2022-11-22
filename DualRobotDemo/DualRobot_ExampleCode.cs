@@ -504,18 +504,22 @@ namespace DualRobotDemo
             core.SetUserFrame(Model.CR7);
 
             // (8) Execute Scene2_Sim
-            //
+
+            // stage - 1
             core.Scene2_Sim(MovementType.QuickCheck, MovementStage.One);
 
+            // stage - 2
             core.SceneRobotInit(SceneName.Scene2_Sim);
             core.Scene2_Sim(MovementType.QuickCheck, MovementStage.Two);
 
+            // stage - 3
             param[1] = 20;
             param[8] = 13;
             core.SceneParamInit(SceneName.Scene2_Sim, param);
             core.SceneRobotInit(SceneName.Scene2_Sim, Model.Null, MovementStage.Three);
             core.Scene2_Sim(MovementType.QuickCheck, MovementStage.Three);
 
+            // stage - 4
             param[1] = 20;
             param[8] = 13;
             core.SceneParamInit(SceneName.Scene2_Sim, param);
@@ -598,20 +602,25 @@ namespace DualRobotDemo
             core.SceneRobotInit(SceneName.Scene2);
             // c.
             core.SetUserFrame(Model.CR15);
-            core.SetUserFrame(Model.CR7); 
+            core.SetUserFrame(Model.CR7);
 
             // (8) Execute Scene2
+
+            // stage - 1
             core.Scene2(MovementType.QuickCheck, MovementStage.One);
 
+            // stage - 2
             core.SceneRobotInit(SceneName.Scene2);
             core.Scene2(MovementType.QuickCheck, MovementStage.Two);
 
+            // stage - 3
             param[1] = 20;
             param[8] = 13;
             core.SceneParamInit(SceneName.Scene2, param);
             core.SceneRobotInit(SceneName.Scene2, Model.Null, MovementStage.Three);
             core.Scene2(MovementType.QuickCheck, MovementStage.Three);
-            
+
+            // stage - 4
             param[1] = 20;
             param[8] = 13;
             core.SceneParamInit(SceneName.Scene2, param);
@@ -677,12 +686,14 @@ namespace DualRobotDemo
 
             core.SetStationAntennaTCP_Cr7(station_antenna_tcp_cr7);
 
+
             // (6) Align LiftTable Height with station_center_zero_tcp
             double lift_table_align_error = 1.025;
+            double stage34_fixture_height = 127;
 
             // (7) Scene Initialization
             // a. examples.
-            double[] param = { 160, 180, 10, 360, 180, 140, lift_table_align_error };
+            double[] param = { 250, 180, 10, 180, 90, 140, lift_table_align_error, stage34_fixture_height };
             core.SceneParamInit(SceneName.Scene1A_Sim, param);
             // b.
             core.SceneRobotInit(SceneName.Scene1A_Sim);
@@ -691,9 +702,11 @@ namespace DualRobotDemo
             core.SetUserFrame(Model.CR7);
 
             // (8) Execute Scene2_Sim
-            //
+
+            // stage - 1
             core.Scene1A_Sim(MovementType.QuickCheck, MovementStage.One);
 
+            // stage - 2
             core.SceneRobotInit(SceneName.Scene1A_Sim);
             core.Scene1A_Sim(MovementType.QuickCheck, MovementStage.Two);
         }
@@ -767,7 +780,7 @@ namespace DualRobotDemo
 
             // (7) Scene Initialization
             // a. examples.
-            double[] param = { 160, 180, 10, 360, 180, 13, lift_table_align_error, stage34_fixture_height };
+            double[] param = { 160, 180, 10, 180, 90, 13, lift_table_align_error, stage34_fixture_height };
             core.SceneParamInit(SceneName.Scene1A, param);
             // b.
             core.SceneRobotInit(SceneName.Scene1A);
