@@ -701,7 +701,6 @@ namespace DualRobotDemo
         }
         public void DualRobot_Scene1A_CityU()
         {
-            // (1) Connection
             DualRobotLib.Core core = new Core();
             // core.Connect(Model.CR15, "127.0.0.1", 9021);
             // core.Connect(Model.CR7, "127.0.0.1", 60008);
@@ -740,7 +739,8 @@ namespace DualRobotDemo
             // offset-1: cr7: 6.27f;  cr15:6.24f;
             // offset-2: cr7: 16.05f; cr15: 16.03f;
             float[] antenna_offset_cr7 = { 0.0f, 0.0f, 50.25f, 0.0f, 0.0f, 0.0f };
-            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 50.35f, 0.0f, 0.0f, 0.0f };
+            //float[] antenna_offset_cr15 = { 0.0f, 0.0f, 50.35f, 0.0f, 0.0f, 0.0f };//Scene 1A Testing Cr15 Cal Pin = 50.35
+            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 5f, 0.0f, 0.0f, 0.0f };//Scene 1A Testing Cr15 Cal Pin = 5.00
             var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
             var tcp_cr15 = core.GetToolAntennaTCP(Model.CR15, fixture_tcp_cr15, antenna_offset_cr15);
 
@@ -755,7 +755,8 @@ namespace DualRobotDemo
             float station_cal_pin_length = 50.25f;
             var station_center_zero_tcp = core.GetStationCenterZeroTCP(station_cal_pin_tcp_cr7, station_cal_pin_length);
 
-            float[] antenna_offset_station = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+            //float[] antenna_offset_station = { 0.0f, 0.0f, 50.35f, 0.0f, 0.0f, 0.0f };//Scene 1A Testing Station Cal Pin = 50.35
+            float[] antenna_offset_station = { 0.0f, 0.0f, 5.00f, 0.0f, 0.0f, 0.0f };//Scene 1A Testing Station Cal Plate = 5.00
             float station_offset = 0;
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
@@ -766,10 +767,13 @@ namespace DualRobotDemo
             // (6) Align LiftTable Height with station_center_zero_tcp
             double lift_table_align_error = 1.025;
             double stage34_fixture_height = 0; // *** 127 ->0
+            double antenna_height = antenna_offset_station[2];
 
             // (7) Scene Initialization
             // a. examples.
-            double[] param = { 160, 180, 10, 180, 90, 13, lift_table_align_error, stage34_fixture_height };
+            //double[] param = { 160, 180, 10, 180, 90, 13, lift_table_align_error, stage34_fixture_height, antenna_height };//Scene 1A Testing without station fixture offset
+
+            double[] param = { 140, 180, 10, 180, 90, 140, lift_table_align_error, stage34_fixture_height, antenna_height }; //Scene 1A Testing with station fixture offset
             core.SceneParamInit(SceneName.Scene1A, param);
             // b.
             core.SceneRobotInit(SceneName.Scene1A);
