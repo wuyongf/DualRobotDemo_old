@@ -25,17 +25,12 @@ namespace DualRobotDemo
     {
         public MainWindow()
         {
+            // (1) Connection
             DualRobotLib.Core core = new Core();
-            // core.Connect(Model.CR15, "127.0.0.1", 9021);
-            // core.Connect(Model.CR7, "127.0.0.1", 60008);
-            core.Connect(Model.CR15, "192.168.0.125", 60008);
-            core.Connect(Model.CR7, "192.168.0.124", 60008);
-
-            core.Connect(Model.LiftTable, "192.168.0.119", 50000, "COM4");
-            core.Connect(Model.Motor, "COM3");
-
-            core.MotorInit();
-            core.LiftTableInit();
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+            // core.Connect(Model.CR15, "192.168.0.125", 60008);
+            // core.Connect(Model.CR7, "192.168.0.124", 60008);
 
             // (2) Get Calibrated Co-Frame Data
             // % cal-2: current error: 0.2mm
@@ -55,16 +50,15 @@ namespace DualRobotDemo
 
             float[] cal_pin_tcp_cr7 = { -120.609f, 180.878f, 134.808f, cal_wpr_cr7[0], cal_wpr_cr7[1], cal_wpr_cr7[2] };
             float[] cal_pin_tcp_cr15 = { -1.831f, 0.474f, 299.920f, cal_wpr_cr15[0], cal_wpr_cr15[1], cal_wpr_cr15[2] };
-            float cal_pin_length_cr7 = 50.25f;
-            float cal_pin_length_cr15 = 50.35f;
+            float cal_pin_length_cr7 = 45.23f + 5.02f;
+            float cal_pin_length_cr15 = 45.33f + 5.02f;
             var fixture_tcp_cr7 = core.GetToolFixtureTCP(Model.CR7, cal_pin_tcp_cr7, cal_pin_length_cr7);
             var fixture_tcp_cr15 = core.GetToolFixtureTCP(Model.CR15, cal_pin_tcp_cr15, cal_pin_length_cr15);
 
             // offset-1: cr7: 6.27f;  cr15:6.24f;
             // offset-2: cr7: 16.05f; cr15: 16.03f;
-            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 50.25f, 0.0f, 0.0f, 0.0f };
-            //float[] antenna_offset_cr15 = { 0.0f, 0.0f, 50.35f, 0.0f, 0.0f, 0.0f };//Scene 1A Testing Cr15 Cal Pin = 50.35
-            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 5f, 0.0f, 0.0f, 0.0f };//Scene 1A Testing Cr15 Cal Pin = 5.00
+            float[] antenna_offset_cr7 = { 0.0f, 0.0f, 16.05f, 0.0f, 0.0f, 0.0f };
+            float[] antenna_offset_cr15 = { 0.0f, 0.0f, 50.35f, 0.0f, 0.0f, 0.0f };
             var tcp_cr7 = core.GetToolAntennaTCP(Model.CR7, fixture_tcp_cr7, antenna_offset_cr7);
             var tcp_cr15 = core.GetToolAntennaTCP(Model.CR15, fixture_tcp_cr15, antenna_offset_cr15);
 
@@ -74,43 +68,45 @@ namespace DualRobotDemo
             core.SetSpeed(Model.CR15, 100);
             core.SetSpeed(Model.CR7, 100);
 
-            // (5) Set Station Antenna TCP (Cr7) (Cal. tool + UF: 0) *** need to update***
-            float[] station_cal_pin_tcp_cr7 = { 828.640f, -106.108f, 148.415f, 0.612f, 0.673f, -92.367f }; // switch to tool:5 user frame:0
-            float station_cal_pin_length = 50.25f;
+            // (5) Set Station Antenna TCP (Cr7) (Cal. tool + UF: 0)
+            float[] station_cal_pin_tcp_cr7 = { 832.066f, -102.571f, 277.335f, 0.953f, 0.102f, -92.282f }; // switch to tool:5 user frame:0
+            float station_cal_pin_length = 41.05f;
             var station_center_zero_tcp = core.GetStationCenterZeroTCP(station_cal_pin_tcp_cr7, station_cal_pin_length);
 
-            //float[] antenna_offset_station = { 0.0f, 0.0f, 50.35f, 0.0f, 0.0f, 0.0f };//Scene 1A Testing Station Cal Pin = 50.35
-            float[] antenna_offset_station = { 0.0f, 0.0f, 5.00f, 0.0f, 0.0f, 0.0f };//Scene 1A Testing Station Cal Plate = 5.00
-            float station_offset = 0;
+            float[] antenna_offset_station = { 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f };
+            float station_offset = 0; // 0-290
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
             Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
 
             core.SetStationAntennaTCP_Cr7(station_antenna_tcp_cr7);
 
+
             // (6) Align LiftTable Height with station_center_zero_tcp
             double lift_table_align_error = 1.025;
-            double stage34_fixture_height = 0; // *** 127 ->0
-            double antenna_height = antenna_offset_station[2];
+            double stage34_fixture_height = 127;
 
             // (7) Scene Initialization
             // a. examples.
-            //double[] param = { 160, 180, 10, 180, 90, 13, lift_table_align_error, stage34_fixture_height, antenna_height };//Scene 1A Testing without station fixture offset
-
-            double[] param = { 140, 180, 10, 180, 90, 140, lift_table_align_error, stage34_fixture_height, antenna_height }; //Scene 1A Testing with station fixture offset
-            core.SceneParamInit(SceneName.Scene1A, param);
+            double[] param = { 250, 180, 10, 180, 90, 140, lift_table_align_error, stage34_fixture_height };
+            core.SceneParamInit(SceneName.Scene1A_Sim, param);
             // b.
-            core.SceneRobotInit(SceneName.Scene1A);
+            core.SceneRobotInit(SceneName.Scene1A_Sim);
             // c.
             core.SetUserFrame(Model.CR15);
             core.SetUserFrame(Model.CR7);
 
-            // (8) Execute Scene1A
-            //
-            core.Scene1A(MovementType.QuickCheck, MovementStage.One);
+            // (8) Scene2_Sim - StepRun Debug
 
-            core.SceneRobotInit(SceneName.Scene1A);
-            core.Scene1A(MovementType.QuickCheck, MovementStage.Two);
+            Thread th1 = new Thread(() => core.thread_GetViaPoints());
+            th1.Start();
+
+            // stage - 1
+            core.Scene1A_Sim(MovementType.StepRun, MovementStage.One);
+
+            // stage - 2
+            core.SceneRobotInit(SceneName.Scene1A_Sim);
+            core.Scene1A_Sim(MovementType.StepRun, MovementStage.Two);
         }  
     }
 }
