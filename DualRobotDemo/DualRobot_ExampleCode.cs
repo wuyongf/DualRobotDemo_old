@@ -667,10 +667,11 @@ namespace DualRobotDemo
             // (6) Align LiftTable Height with station_center_zero_tcp
             double lift_table_align_error = 1.025;
             double stage34_fixture_height = 0;
+            double antenna_height = antenna_offset_station[2];
 
             // (7) Scene Initialization
             // a. examples.
-            double[] param = { 250, 180, 10, 180, 90, 140, lift_table_align_error, stage34_fixture_height };
+            double[] param = { 250, 180, 10, 180, 90, 140, lift_table_align_error, stage34_fixture_height, antenna_height };
             core.SceneParamInit(SceneName.Scene1A_Sim, param);
             // b.
             core.SceneRobotInit(SceneName.Scene1A_Sim);
@@ -952,6 +953,10 @@ namespace DualRobotDemo
 
             Thread th1 = new Thread(() => core.thread_GetViaPoints());
             th1.Start();
+
+            Console.WriteLine(core.GetViaPointsInfo(SceneName.Scene1A_Sim)[0]);
+            Console.WriteLine(core.GetViaPointsInfo(SceneName.Scene1A_Sim)[1]);
+            Console.WriteLine(core.GetViaPointsInfo(SceneName.Scene1A_Sim)[2]);
 
             // stage - 1
             core.Scene1A_Sim(MovementType.StepRun, MovementStage.One);
