@@ -86,6 +86,8 @@ namespace DualRobotDemo
 
             // (8) Execute Scene2_Sim
 
+            Console.WriteLine("tcp dis: " + core.GetTcpDistance_Scene2(Model.CR15));
+
             // stage - 1
             core.Scene1A_Sim(MovementType.QuickCheck, MovementStage.One);
 
