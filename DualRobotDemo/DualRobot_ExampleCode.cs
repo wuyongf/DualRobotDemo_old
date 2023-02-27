@@ -262,6 +262,24 @@ namespace DualRobotDemo
             double[] pos1 = new[] { 1277.247, 4.829875, 100.56811, -178.5574, 36.90373, -178.0444 };
             core.UFMove(Model.CR15, pos1);
         }
+        public void PoseTransformation()
+        {
+            // (1) Connection
+            DualRobotLib.Core core = new Core();
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+
+            DualRobotLib.Trans trans = new Trans();
+
+            double[] relPos = { 0, 0, 0, 0, 0, 90 };
+            double[] curPos = core.GetCurPos(Model.CR15);
+
+            var t1 = trans.pos2T(ref relPos);
+            var t2 = trans.pos2T(ref curPos);
+            var t3 = t2 * t1;
+
+            float[] targetPos = trans.T2pos(t3);
+        }
 
         // CityU-Demo
         public void DualRobot_Scene1B_CityU()
@@ -1019,6 +1037,23 @@ namespace DualRobotDemo
 
             // todo: Relative Movement
             // core.LiftTableRelMoveTo();
+        }
+        public void LiftTable_Demo2()
+        {
+            // (1) Connection
+            DualRobotLib.Core core = new Core();
+            //core.Connect(Model.CR15, "127.0.0.1", 9021);
+            //core.Connect(Model.CR7, "127.0.0.1", 60008);
+            core.Connect(Model.CR15, "192.168.0.125", 60008);
+            core.Connect(Model.CR7, "192.168.0.124", 60008);
+
+            core.Connect(Model.LiftTable, "192.168.0.119", 50000, "COM4");
+            // core.Connect(Model.Motor, "COM3");
+
+            // 2. Init
+            core.LiftTableInit();
+
+            Thread.Sleep(5000);
         }
 
         // LED
