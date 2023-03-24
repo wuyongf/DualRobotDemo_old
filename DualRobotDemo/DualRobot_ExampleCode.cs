@@ -278,7 +278,8 @@ namespace DualRobotDemo
             var t2 = trans.pos2T(ref curPos);
             var t3 = t2 * t1;
 
-            float[] targetPos = trans.T2pos(t3);
+            // float[] targetPosFloat = trans.T2pos(t3);
+            double[] targetPos = trans.T2posd(t3);
         }
 
         // CityU-Demo
