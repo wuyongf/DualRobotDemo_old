@@ -282,6 +282,36 @@ namespace DualRobotDemo
             double[] targetPos = trans.T2posd(t3);
         }
 
+        public void ListAllTCPs()
+        {
+            // (1) Connection
+            DualRobotLib.Core core = new Core();
+            core.Connect(Model.CR15, "127.0.0.1", 9021);
+            core.Connect(Model.CR7, "127.0.0.1", 60008);
+
+            // ....
+            // ....
+            // Please run the following code after step (7) Scene Initialization
+
+            var cal_pos = core.GetRobotBaseCalibrationPose(); // relation between cr7 and cr15. formula: T_cr15 = T_cal * T_cr7
+            var lttt_tcp = core.GetStationAntennaTCP_Cr7(); // record in cr7 base coordinate
+            var cr7_tcp = core.GetCurPos(Model.CR7);        // record in cr7 base coordinate
+            var cr15_tcp = core.GetCurPos(Model.CR15);      // record in cr15 base coordinate
+
+            Console.WriteLine("cal_pos = " + string.Join(",", cal_pos));
+            Console.WriteLine("lttt_tcp = " + string.Join(",", lttt_tcp));
+            Console.WriteLine("cr7_tcp = " + string.Join(",", cr7_tcp));
+            Console.WriteLine("cr15_tcp = " + string.Join(",", cr15_tcp));
+
+
+            var dis1 = core.GetTcpDistance(SceneName.Scene1A_Sim, Model.LiftTable, Model.CR15); // get distance between lttt_tcp and cr15_tcp
+            var dis2 = core.GetTcpDistance(SceneName.Scene1A_Sim, Model.LiftTable, Model.CR7);  // get distance between lttt_tcp and cr7_tcp
+            var dis3 = core.GetTcpDistance(SceneName.Scene1A_Sim, Model.CR15, Model.CR7);       // get distance between cr15_tcp and cr7_tcp
+
+            Console.WriteLine("distance between lttt_tcp and cr15_tcp: " + dis1);
+            Console.WriteLine("distance between lttt_tcp and cr7_tcp: " + dis2);
+            Console.WriteLine("distance between cr15_tcp and cr7_tcp: " + dis3);
+        }
         // CityU-Demo
         public void DualRobot_Scene1B_CityU()
         {
@@ -448,8 +478,10 @@ namespace DualRobotDemo
 
             // (2) Get Calibrated Co-Frame Data
             // % cal-2: current error: 0.2mm
-            double[] Pos_Cr7_CalliBase = { 778.281, -38.520, -336.517, 0.810, 0.687, -92.389 };
-            double[] Pos_Cr15_CalliBase = { 1252.171, 24.657, -770.478, 0.269, 0.423, 89.225 };
+            // double[] Pos_Cr7_CalliBase = { 778.281, -38.520, -336.517, 0.810, 0.687, -92.389 };
+            // double[] Pos_Cr15_CalliBase = { 1252.171, 24.657, -770.478, 0.269, 0.423, 89.225 };
+            double[] Pos_Cr7_CalliBase = { 860.0, 0, 247.0, 0, 0, -90.0 };
+            double[] Pos_Cr15_CalliBase = { 1190.0, 0, -193.0, 0, 0, 90.0 };
             core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
 
             // (3) Get Tool Antenna TCP Data 
@@ -491,7 +523,7 @@ namespace DualRobotDemo
             float station_offset = 0; // 0-290
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
-            Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
+            Console.WriteLine("station_antenna_tcp_cr7: " + string.Join(",", station_antenna_tcp_cr7));
 
             core.SetStationAntennaTCP_Cr7(station_antenna_tcp_cr7);
 
@@ -594,7 +626,7 @@ namespace DualRobotDemo
             float station_offset = 0;
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
-            Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
+            Console.WriteLine("station_antenna_tcp_cr7: " + string.Join(",", station_antenna_tcp_cr7));
 
             core.SetStationAntennaTCP_Cr7(station_antenna_tcp_cr7);
 
@@ -807,6 +839,8 @@ namespace DualRobotDemo
             // % cal-2: current error: 0.2mm
             double[] Pos_Cr7_CalliBase = { 778.281, -38.520, -336.517, 0.810, 0.687, -92.389 };
             double[] Pos_Cr15_CalliBase = { 1252.171, 24.657, -770.478, 0.269, 0.423, 89.225 };
+            // double[] Pos_Cr7_CalliBase = { 860.0, 0, 247.0, 0, 0, -90.0 };
+            // double[] Pos_Cr15_CalliBase = { 1190.0, 0, -193.0, 0, 0, 90.0 };
             core.RobotBaseCalibrationInit(Pos_Cr7_CalliBase, Pos_Cr15_CalliBase);
 
             // (3) Get Tool Antenna TCP Data 
@@ -848,10 +882,9 @@ namespace DualRobotDemo
             float station_offset = 0; // 0-290
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
-            Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
+            Console.WriteLine("station_antenna_tcp_cr7: " + string.Join(",", station_antenna_tcp_cr7));
 
             core.SetStationAntennaTCP_Cr7(station_antenna_tcp_cr7);
-
 
             // (6) Align LiftTable Height with station_center_zero_tcp
             double lift_table_align_error = 1.025;
@@ -872,21 +905,21 @@ namespace DualRobotDemo
 
             Thread th1 = new Thread(() => core.thread_GetViaPoints());
             th1.Start();
-
+            
             // stage - 1
             core.Scene2_Sim(MovementType.StepRun, MovementStage.One);
-
+            
             // stage - 2
             core.SceneRobotInit(SceneName.Scene2_Sim);
             core.Scene2_Sim(MovementType.StepRun, MovementStage.Two);
-
+            
             // stage - 3
             param[1] = 20;
             param[8] = 13;
             core.SceneParamInit(SceneName.Scene2_Sim, param);
             core.SceneRobotInit(SceneName.Scene2_Sim, Model.Null, MovementStage.Three);
             core.Scene2_Sim(MovementType.StepRun, MovementStage.Three);
-
+            
             // stage - 4
             param[1] = 20;
             param[8] = 13;
@@ -949,10 +982,9 @@ namespace DualRobotDemo
             float station_offset = 0; // 0-290
 
             var station_antenna_tcp_cr7 = core.GetStationAntennaTCP(station_center_zero_tcp, antenna_offset_station, station_offset);
-            Console.WriteLine("station_antenna_tcp_cr7: " + station_antenna_tcp_cr7);
+            Console.WriteLine("station_antenna_tcp_cr7: " + string.Join(",", station_antenna_tcp_cr7));
 
             core.SetStationAntennaTCP_Cr7(station_antenna_tcp_cr7);
-
 
             // (6) Align LiftTable Height with station_center_zero_tcp
             double lift_table_align_error = 1.025;
