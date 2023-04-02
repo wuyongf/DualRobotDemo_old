@@ -27,7 +27,7 @@ namespace DualRobotDemo
     {
         public MainWindow()
         {
-            
+
         }
 
         public void ListAllTCPs(ref DualRobotLib.Core core)
